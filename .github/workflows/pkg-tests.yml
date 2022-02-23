@@ -75,12 +75,18 @@ jobs:
     if: always()
     runs-on: ubuntu-18.04
     steps:
+      - uses: actions/checkout@v2
+
       - name: "Download every job status"
         uses: actions/download-artifact@v2
         with:
           path: reports
 
-      - name: "Print report"
-        id: print-report
-        run: |
-          cat "reports/ace/ace.txt"
+      - name: "Set up Python 3.7"
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: "Generate report"
+        id: report
+        run: python pkg-reports.py
