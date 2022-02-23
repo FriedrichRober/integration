@@ -1,7 +1,7 @@
 import sys
 import os
 import glob
-import pprint
+import json
 
 ################################################################################
 # Insist on Python >= 3.6
@@ -15,13 +15,9 @@ for FILE in glob.glob('reports/**/*.txt', recursive=True):
     FILES.append(FILE)
 
 FILES.sort()
-REPORTS = []
+REPORTS = {}
 
 for FILE in FILES:
-    REPORTS.append({
-        "pkg": os.path.basename(FILE),
-        "status": open(FILE).read().rstrip()
-    })
+    REPORTS[os.path.splitext(os.path.basename(FILE))[0]] = open(FILE).read().rstrip()
 
-pp = pprint.PrettyPrinter(depth=2)
-pp.pprint(REPORTS)
+print(json.dumps(REPORTS, indent=4))
