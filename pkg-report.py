@@ -4,6 +4,7 @@ import sys
 import os
 import glob
 import json
+from datetime import datetime
 
 ################################################################################
 # Insist on Python >= 3.6
@@ -23,6 +24,7 @@ for FILE in FILES:
     PKG_STATUS[os.path.splitext(os.path.basename(FILE))[0]] = open(FILE).read().rstrip()
 
 REPORT = {}
+REPORT['date'] = datetime.now()
 REPORT['pkgs'] = PKG_STATUS
 
 DIR = 'gh-pages/_data'
