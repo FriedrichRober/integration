@@ -100,7 +100,7 @@ jobs:
         id: report
         run: python pkg-report.py
 
-      - name: "Push report"
+      - name: "Push report to gh-pages"
         id: push-report
         run: |
           git config --global user.name 'Friedrich Rober'
@@ -108,3 +108,10 @@ jobs:
           git add gh-pages/_data/*
           git commit -m "Automated report"
           git push
+
+      - name: "Upload report"
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: "report"
+          path: "_data/"
