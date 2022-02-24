@@ -35,8 +35,8 @@ REPORT['date'] = str(datetime.now())
 REPORT['pkgs'] = PKG_STATUS
 
 DIR_REPORT = 'gh-pages/_data/reports/by_hash'
-os.makedirs(DIR_REPORT, exist_ok = True)
 DIR_REPORT += '/'+hash
+os.makedirs(DIR_REPORT, exist_ok = True)
 
 REPORT['total'] = 0
 REPORT['success'] = 0
