@@ -47,7 +47,7 @@ for pkg, status in PKG_STATUS.items():
         warning('Unknown job status \"'+status+'\" for pkg \"'+pkg+'\"')
 
 with open(DIR+'/report.json', 'w') as f:
-    json.dumps(REPORT, f, indent=4)
+    json.dump(REPORT, f, ensure_ascii=False, indent=4)
 
 relativeFailures = REPORT['failure'] / REPORT['total']
 if relativeFailures > 0.05:
@@ -66,4 +66,4 @@ BADGE = {
 }
 
 with open(DIR+'/badge.json', 'w') as f:
-    json.dumps(BADGE, f, indent=4)
+    json.dump(BADGE, f, ensure_ascii=False, indent=4)
