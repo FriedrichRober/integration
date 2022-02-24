@@ -108,7 +108,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
           cd gh-pages
           git add _data/*
-          git commit -m "Automated report version 2"
+          git commit -m "Automated report"
           git push origin HEAD:gh-pages
 
       - name: "Upload report"
