@@ -1,4 +1,4 @@
-# Run this file on gh-pages branch
+# Run this file on main branch with a gh-pages worktree
 from logging import warning
 import sys
 import os

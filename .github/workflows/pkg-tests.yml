@@ -80,10 +80,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: "Create worktree gh-pages"
+      - name: "Create gh-pages worktree"
         run: |
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
-          git branch gh-pages origin/gh-pages --no-track
+          git fetch
+          git branch --track gh-pages origin/gh-pages
           git worktree add gh-pages origin/gh-pages
 
       - name: "Download every job status"
@@ -105,9 +106,10 @@ jobs:
         run: |
           git config --global user.name 'Friedrich Rober'
           git config --global user.email 'friedrich.rober@rwth-aachen.de'
-          git add gh-pages/_data/*
+          cd gh-pages
+          git add _data/*
           git commit -m "Automated report"
-          git push
+          git push origin HEAD:gh-pages
 
       - name: "Upload report"
         uses: actions/upload-artifact@v2
