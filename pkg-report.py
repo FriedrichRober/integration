@@ -19,7 +19,7 @@ hash = sys.argv[2]
 branch = sys.argv[3]
 
 ################################################################################
-# Iterate over all reports
+# Generate report
 FILES = []
 for FILE in glob.glob('reports/**/*.txt', recursive=True):
     FILES.append(FILE)
@@ -59,6 +59,12 @@ with open(DIR_REPORT+'/report.json', 'w') as f:
 
 os.symlink(DIR_REPORT, DIR_REPORT_BASE+'/latest')
 
+################################################################################
+# Generate badge
+
+DIR_BADGE = 'gh-pages/_data/badges'
+os.makedirs(DIR_BADGE, exist_ok = True)
+
 relativeFailures = 1 - REPORT['success'] / REPORT['total']
 if relativeFailures > 0.05:
     color = 'critical'
@@ -66,8 +72,6 @@ elif relativeFailures > 0:
     color = 'important'
 else:
     color = 'success'
-
-DIR_BADGE = 'gh-pages/_data'
 
 BADGE = {
     'schemaVersion' : 1,
