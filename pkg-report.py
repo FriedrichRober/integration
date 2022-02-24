@@ -57,7 +57,7 @@ for pkg, status in PKG_STATUS.items():
 with open(DIR_REPORT+'/report.json', 'w') as f:
     json.dump(REPORT, f, ensure_ascii=False, indent=4)
 
-os.symlink(DIR_REPORT, DIR_REPORT_BASE+'/latest')
+symlink(DIR_REPORT, DIR_REPORT_BASE+'/latest', overwrite=True)
 
 ################################################################################
 # Generate badge
