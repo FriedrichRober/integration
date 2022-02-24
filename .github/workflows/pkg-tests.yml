@@ -104,8 +104,8 @@ jobs:
       - name: "Push report to gh-pages"
         id: push-report
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'Friedrich Rober'
+          git config --global user.email 'friedrich.rober@rwth-aachen.de'
           cd gh-pages
           git add _data/*
           git commit -m "Automated report version 2"
