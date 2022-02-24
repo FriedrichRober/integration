@@ -99,7 +99,7 @@ jobs:
 
       - name: "Generate report"
         id: report
-        run: python pkg-report.py
+        run: python pkg-report.py ${{inputs.container}} $(git rev-parse --short "$GITHUB_SHA") ${GITHUB_REF#refs/heads/}
 
       - name: "Push report to gh-pages"
         id: push-report
@@ -110,9 +110,3 @@ jobs:
           git add _data/*
           git commit -m "Automated report"
           git push origin HEAD:gh-pages
-
-      - name: "Upload report"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "report"
-          path: "_data/*"

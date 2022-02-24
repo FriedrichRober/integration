@@ -1,5 +1,5 @@
 # Run this file on main branch with a gh-pages worktree
-from logging import warning
+from utils import *
 import sys
 import os
 import glob
@@ -10,6 +10,13 @@ from datetime import datetime
 # Insist on Python >= 3.6
 if sys.version_info < (3,6):
     error('Python 3.6 or newer is required')
+
+if len(sys.argv) != 4:
+    error('Unknown number of arguments')
+
+docker = sys.argv[1]
+hash = sys.argv[2]
+branch = sys.argv[3]
 
 ################################################################################
 # Iterate over all reports
@@ -27,10 +34,9 @@ REPORT = {}
 REPORT['date'] = str(datetime.now())
 REPORT['pkgs'] = PKG_STATUS
 
-DIR = 'gh-pages/_data'
-
-if not os.path.isdir(DIR):
-    os.mkdir(DIR)
+DIR_REPORT = 'gh-pages/_data/reports/by_hash'
+os.makedirs(DIR_REPORT, exist_ok = True)
+DIR_REPORT += '/'+hash
 
 REPORT['total'] = 0
 REPORT['success'] = 0
@@ -48,7 +54,7 @@ for pkg, status in PKG_STATUS.items():
     else:
         warning('Unknown job status \"'+status+'\" for pkg \"'+pkg+'\"')
 
-with open(DIR+'/report.json', 'w') as f:
+with open(DIR_REPORT+'/report.json', 'w') as f:
     json.dump(REPORT, f, ensure_ascii=False, indent=4)
 
 relativeFailures = 1 - REPORT['success'] / REPORT['total']
@@ -59,6 +65,8 @@ elif relativeFailures > 0:
 else:
     color = 'success'
 
+DIR_BADGE = 'gh-pages/_data'
+
 BADGE = {
     'schemaVersion' : 1,
     'label': 'Tests',
@@ -67,5 +75,5 @@ BADGE = {
     'namedLogo': "github"
 }
 
-with open(DIR+'/badge.json', 'w') as f:
+with open(DIR_BADGE+'/badge.json', 'w') as f:
     json.dump(BADGE, f, ensure_ascii=False, indent=4)
