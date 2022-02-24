@@ -101,12 +101,15 @@ jobs:
         id: report
         run: python pkg-report.py
 
-      - run: cd gh-pages
-
-      - uses: EndBug/add-and-commit@v7
-        with:
-          default_author: github_actions
-          add: "_data/*"
+      - name: "Push report to gh-pages"
+        id: push-report
+        run: |
+          git config --global user.name ${{github.actor}}
+          git config --global user.email ${{github.actor}}@users.noreply.github.com
+          cd gh-pages
+          git add _data/*
+          git commit -m "Automated report version 2"
+          git push origin HEAD:gh-pages
 
       - name: "Upload report"
         uses: actions/upload-artifact@v2
