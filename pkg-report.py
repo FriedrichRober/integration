@@ -51,7 +51,7 @@ for pkg, status in PKG_STATUS.items():
 with open(DIR+'/report.json', 'w') as f:
     json.dump(REPORT, f, ensure_ascii=False, indent=4)
 
-relativeFailures = REPORT['failure'] / REPORT['total']
+relativeFailures = 1 - REPORT['success'] / REPORT['total']
 if relativeFailures > 0.05:
     color = 'critical'
 elif relativeFailures > 0:
