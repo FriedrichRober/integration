@@ -74,8 +74,17 @@ jobs:
     needs: individual-package
     if: always()
     runs-on: ubuntu-18.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
+
+      - name: "Create worktree gh-pages"
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git branch gh-pages origin/gh-pages --no-track
+          git worktree add gh-pages origin/gh-pages
 
       - name: "Download every job status"
         uses: actions/download-artifact@v2
@@ -89,4 +98,13 @@ jobs:
 
       - name: "Generate report"
         id: report
-        run: python pkg-reports.py
+        run: python pkg-report.py
+
+      - name: "Push report"
+        id: push-report
+        run: |
+          git config --global user.name 'Friedrich Rober'
+          git config --global user.email 'friedrich.rober@rwth-aachen.de'
+          git add gh-pages/_data/*
+          git commit -m "Automated report"
+          git push
