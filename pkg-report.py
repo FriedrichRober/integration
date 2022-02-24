@@ -35,7 +35,7 @@ REPORT['success'] = 0
 REPORT['failure'] = 0
 REPORT['cancelled'] = 0
 
-for pkg, status in PKG_STATUS:
+for pkg, status in PKG_STATUS.items():
     REPORT['total'] += 1
     if status == 'success':
         REPORT['success'] += 1
