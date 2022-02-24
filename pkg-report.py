@@ -34,8 +34,8 @@ REPORT = {}
 REPORT['date'] = str(datetime.now())
 REPORT['pkgs'] = PKG_STATUS
 
-DIR_REPORT = 'gh-pages/_data/reports/by_hash'
-DIR_REPORT += '/'+hash
+DIR_REPORT_BASE = 'gh-pages/_data/reports'
+DIR_REPORT = DIR_REPORT_BASE+'/by_hash/'+hash
 os.makedirs(DIR_REPORT, exist_ok = True)
 
 REPORT['total'] = 0
@@ -56,6 +56,8 @@ for pkg, status in PKG_STATUS.items():
 
 with open(DIR_REPORT+'/report.json', 'w') as f:
     json.dump(REPORT, f, ensure_ascii=False, indent=4)
+
+os.symlink(DIR_REPORT, DIR_REPORT_BASE+'/latest')
 
 relativeFailures = 1 - REPORT['success'] / REPORT['total']
 if relativeFailures > 0.05:
