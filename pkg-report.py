@@ -51,11 +51,11 @@ with open(DIR+'/report.json', 'w') as f:
 
 relativeFailures = REPORT['failure'] / REPORT['total']
 if relativeFailures > 0.05:
-    color = 'red'
+    color = 'critical'
 elif relativeFailures > 0:
-    color = 'orange'
+    color = 'important'
 else:
-    color = 'green'
+    color = 'success'
 
 BADGE = {
     'schemaVersion' : 1,
