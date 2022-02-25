@@ -73,25 +73,25 @@ with open('report.md', 'w') as f:
     f.write('*Triggered By:*\n')
     f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
 
-    PKGS = REPORT['pkgs'].keys()
-    LAST_PKGS = LAST_REPORT['pkgs'].keys()
+    PKGS = REPORT['pkgs']
+    LAST_PKGS = LAST_REPORT['pkgs']
 
     f.write('## Changed Status\n')
-    for pkg in [value for value in PKGS if value in LAST_PKGS]:
+    for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
         status = PKGS[pkg]
         last_status = LAST_PKGS[pkg]
         if status != last_status:
             f.write('%s : changed status from %s to %s\n' % (pkg, last_status, status))
 
     f.write('## Same Status\n')
-    for pkg in [value for value in PKGS if value in LAST_PKGS]:
+    for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
         status = PKGS[pkg]
         last_status = LAST_PKGS[pkg]
         if status == last_status:
             f.write('%s : %s\n' % (pkg, status))
 
     f.write('## New Packages\n')
-    for pkg in [value for value in PKGS if not value in LAST_PKGS]:
+    for pkg in [value for value in PKGS.keys() if not value in LAST_PKGS.keys()]:
         f.write('%s\n' % pkg)
 
     f.write('## Removed Packages\n')
