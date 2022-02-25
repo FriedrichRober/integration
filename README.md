@@ -7,6 +7,8 @@ Testing Badge:
 [![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/FriedrichRober/integration/data/badges/badge.json)](https://github.com/FriedrichRober/integration/actions/workflows/pkg-master-caller.yml)
 
 
+[Report is here](https://friedrichrober.github.io/integration/)
+
 ## Summary of status
 
 This is ultimately an attempt to replicate a dashboard like the one that existed at: <https://github.com/gap-system/gap-distribution/blob/master/README.md>
