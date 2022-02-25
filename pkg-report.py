@@ -112,11 +112,11 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
         if len(PKGS_NOW_CHANGED) > 0:
             f.write('## %s\n\n' % STATUS_HEADER)
             f.write('%d packages %s tests only on the current version.' % (len(PKGS_NOW_CHANGED), STATUS_MSG))
-            f.write('<details> <summary>Click to expand!</summary>\n')
+            f.write('<details> <summary>Click to expand!</summary>\n\n')
             for pkg in PKGS_NOW_CHANGED:
                 status = PKGS[pkg]
                 last_status = LAST_PKGS[pkg]
-                f.write('%s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
+                f.write('- %s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
             f.write('</details>\n\n')
 
     ############################################################################
@@ -133,10 +133,10 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
         if len(PKGS_FILTERED) > 0:
             f.write('## %s\n\n' % STATUS_HEADER)
             f.write('%d packages %s tests also on the previous version.' % (len(PKGS_FILTERED), STATUS_MSG))
-            f.write('<details> <summary>Click to expand!</summary>\n')
+            f.write('<details> <summary>Click to expand!</summary>\n\n')
             for pkg in PKGS_FILTERED:
                 status = PKGS[pkg]
-                f.write('%s : %s <br>\n' % (pkg, status))
+                f.write('- %s : %s <br>\n' % (pkg, status))
             f.write('</details>\n\n')
 
 symlink(DIR_REPORT, DIR_LATEST_REPORT_SYMBOLIC, overwrite=True)
