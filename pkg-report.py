@@ -67,36 +67,38 @@ with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
 
 with open(DIR_REPORT+'/report.md', 'w') as f:
     # Header
-    f.write('# Package Evaluation Report\n')
-    f.write('## Job Properties\n')
-    f.write('*Commit(s):*\n')
-    f.write('*Triggered By:*\n')
-    f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
+    f.write('# Package Evaluation Report\n\n')
+    f.write('## Job Properties\n\n')
+    f.write('*Commit(s):* %s\n\n' % hash)
+    f.write('*Triggered By:*\n\n')
+    f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.\n\n' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
 
     PKGS = REPORT['pkgs']
     LAST_PKGS = LAST_REPORT['pkgs']
 
-    f.write('## Changed Status\n')
+    f.write('## Changed Status\n\n')
+    f.write('<details> <summary>Click to expand!</summary>\n')
     for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
         status = PKGS[pkg]
         last_status = LAST_PKGS[pkg]
         if status != last_status:
-            f.write('%s : changed status from %s to %s\n' % (pkg, last_status, status))
+            f.write('%s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
+    f.write('</details>\n')
 
-    f.write('## Same Status\n')
+    f.write('## Same Status\n\n')
     for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
         status = PKGS[pkg]
         last_status = LAST_PKGS[pkg]
         if status == last_status:
-            f.write('%s : %s\n' % (pkg, status))
+            f.write('%s : %s <br>\n' % (pkg, status))
 
-    f.write('## New Packages\n')
+    f.write('## New Packages\n\n')
     for pkg in [value for value in PKGS.keys() if not value in LAST_PKGS.keys()]:
-        f.write('%s\n' % pkg)
+        f.write('%s <br>\n' % pkg)
 
-    f.write('## Removed Packages\n')
+    f.write('## Removed Packages\n\n')
     for pkg in [value for value in LAST_PKGS if not value in PKGS]:
-        f.write('%s\n' % pkg)
+        f.write('%s <br>\n' % pkg)
 
     # # Failed tests
     # f.write('## :heavy_multiplication_x: Packages that failed tests\n')
