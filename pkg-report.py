@@ -34,7 +34,7 @@ for FILE in FILES:
     PKG_STATUS[os.path.splitext(os.path.basename(FILE))[0]] = open(FILE).read().rstrip()
 
 REPORT = {}
-REPORT['workflow'] = REPO+'/'+runID
+REPORT['workflow'] = REPO+'/actions/runs/'+runID
 REPORT['date'] = str(datetime.now())
 REPORT['pkgs'] = PKG_STATUS
 
