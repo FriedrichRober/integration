@@ -64,10 +64,13 @@ with open(DIR_REPORT+'/report.json', 'w') as f:
 ################################################################################
 # Generate markdown
 DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
-DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
+if os.is_dir(DIR_LATEST_REPORT_SYMBOLIC):
+    DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
 
-with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
-    LAST_REPORT = json.load(f)
+    with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
+        LAST_REPORT = json.load(f)
+else: # deal with the first run of this script
+    LAST_REPORT = {'pkgs': {}}
 
 with open(DIR_REPORT+'/report.md', 'w') as f:
     # Header
@@ -89,7 +92,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
         f.write('## New Packages\n\n')
         for pkg in PKGS_NEW:
             status = PKGS_NEW[pkg]
-            f.write('%s : %s <br>\n' % (pkg, status))
+            f.write('- %s : %s <br>\n' % (pkg, status))
 
     ############################################################################
     # Removed Packages
@@ -100,7 +103,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
         f.write('## Removed Packages\n\n')
         for pkg in PKGS_REMOVED:
             status = PKGS_REMOVED[pkg]
-            f.write('%s : %s <br>\n' % (pkg, status))
+            f.write('- %s : %s <br>\n' % (pkg, status))
 
     ############################################################################
     # Changed Status Packages
@@ -108,16 +111,16 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
                 ('failure', 'failed', ':heavy_multiplication_x: Packages now failing'),
                 ('success', 'succeeded', ':heavy_check_mark: Packages now succeeding'),
                 ('cancelled', 'cancelled', ':heavy_exclamation_mark: Packages that now were cancelled')]:
-        PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
+        PKGS_FILTERED = [pkg for pkg in PKGS.keys() if
             pkg in LAST_PKGS.keys() and
             PKGS[pkg] != LAST_PKGS[pkg] and
             PKGS[pkg] == STATUS]
 
-        if len(PKGS_NOW_CHANGED) > 0:
+        if len(PKGS_FILTERED) > 0:
             f.write('## %s\n\n' % STATUS_HEADER)
-            f.write('%d packages %s tests only on the current version.' % (len(PKGS_NOW_CHANGED), STATUS_MSG))
+            f.write('%d packages %s tests only on the current version.' % (len(PKGS_FILTERED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n\n')
-            for pkg in PKGS_NOW_CHANGED:
+            for pkg in PKGS_FILTERED:
                 status = PKGS[pkg]
                 last_status = LAST_PKGS[pkg]
                 f.write('- %s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
