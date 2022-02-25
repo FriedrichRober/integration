@@ -118,7 +118,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
         if len(PKGS_FILTERED) > 0:
             f.write('## %s\n\n' % STATUS_HEADER)
-            f.write('%d packages %s tests only on the current version.' % (len(PKGS_FILTERED), STATUS_MSG))
+            f.write('%d package(s) %s tests only on the current version.' % (len(PKGS_FILTERED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n\n')
             for pkg in PKGS_FILTERED:
                 status = PKGS[pkg]
@@ -139,7 +139,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
         if len(PKGS_FILTERED) > 0:
             f.write('## %s\n\n' % STATUS_HEADER)
-            f.write('%d packages %s tests also on the previous version.' % (len(PKGS_FILTERED), STATUS_MSG))
+            f.write('%d package(s) %s tests also on the previous version.' % (len(PKGS_FILTERED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n\n')
             for pkg in PKGS_FILTERED:
                 status = PKGS[pkg]
