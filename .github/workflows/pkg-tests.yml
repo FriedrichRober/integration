@@ -93,8 +93,8 @@ jobs:
       - name: "Debugging Report Script"
         id: debugging
         run: |
-          if ${{ matrix.package }} in ["aclinb", "agt"]
-          then
+          PKG = ${{ matrix.package }}
+          if [[ "${PKG}" = @("aclinb"| "agt") ]]; then
             exit 0
           else
             exit 1
