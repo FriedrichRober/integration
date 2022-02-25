@@ -168,4 +168,4 @@ jobs:
           cd ../gh-pages
           git add -A
           git commit -m "Update redirect"
-          git push origin HEAD:data
+          git push origin HEAD:gh-pages
