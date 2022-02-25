@@ -11,7 +11,7 @@ from datetime import datetime
 if sys.version_info < (3,6):
     error('Python 3.6 or newer is required')
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     error('Unknown number of arguments')
 
 runID = sys.argv[1]
