@@ -76,31 +76,66 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
     PKGS = REPORT['pkgs']
     LAST_PKGS = LAST_REPORT['pkgs']
 
-    f.write('## Changed Status\n\n')
-    f.write('<details> <summary>Click to expand!</summary>\n')
-    for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
-        status = PKGS[pkg]
-        last_status = LAST_PKGS[pkg]
-        if status != last_status:
-            f.write('%s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
-    f.write('</details>\n\n')
+    ############################################################################
+    # New Packages
+    PKGS_NEW = [pkg for pkg in PKGS.keys() if
+        not pkg in LAST_PKGS.keys()]
 
-    f.write('## Same Status\n\n')
-    f.write('<details> <summary>Click to expand!</summary>\n')
-    for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
-        status = PKGS[pkg]
-        last_status = LAST_PKGS[pkg]
-        if status == last_status:
+    if len(PKGS_NEW) > 0:
+        f.write('## New Packages\n\n')
+        for pkg in PKGS_NEW:
+            status = PKGS_NEW[pkg]
             f.write('%s : %s <br>\n' % (pkg, status))
-    f.write('</details>\n\n')
 
-    f.write('## New Packages\n\n')
-    for pkg in [value for value in PKGS.keys() if not value in LAST_PKGS.keys()]:
-        f.write('%s <br>\n' % pkg)
+    ############################################################################
+    # Removed Packages
+    PKGS_REMOVED = [pkg for pkg in LAST_PKGS.keys() if
+        not pkg in PKGS.keys()]
 
-    f.write('## Removed Packages\n\n')
-    for pkg in [value for value in LAST_PKGS if not value in PKGS]:
-        f.write('%s <br>\n' % pkg)
+    if len(PKGS_REMOVED) > 0:
+        f.write('## Removed Packages\n\n')
+        for pkg in PKGS_REMOVED:
+            status = PKGS_REMOVED[pkg]
+            f.write('%s : %s <br>\n' % (pkg, status))
+
+    ############################################################################
+    # Changed Status Packages
+    for STATUS, STATUS_MSG in [('failure', 'failed'),
+                               ('success', 'succeeded'),
+                               ('cancelled', 'cancelled')]:
+        PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
+            pkg in LAST_PKGS.keys() and
+            PKGS[pkg] != LAST_PKGS[pkg] and
+            PKGS[pkg] == STATUS]
+
+        if len(PKGS_NOW_CHANGED) > 0:
+            f.write('## Packages now failing\n\n')
+            f.write('%d packages %s tests only on the current version.' % len(PKGS_NOW_CHANGED, STATUS_MSG))
+            f.write('<details> <summary>Click to expand!</summary>\n')
+            for pkg in PKGS_NOW_CHANGED:
+                status = PKGS[pkg]
+                last_status = LAST_PKGS[pkg]
+                f.write('%s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
+            f.write('</details>\n\n')
+
+    ############################################################################
+    # Same Status Packages
+    for STATUS, STATUS_MSG in [('failure', 'failed'),
+                               ('success', 'succeeded'),
+                               ('cancelled', 'cancelled')]:
+        PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
+            pkg in LAST_PKGS.keys() and
+            PKGS[pkg] != LAST_PKGS[pkg] and
+            PKGS[pkg] == STATUS]
+
+        if len(PKGS_NOW_CHANGED) > 0:
+            f.write('## Packages now failing\n\n')
+            f.write('%d packages %s tests also on the previous version.' % len(PKGS_NOW_CHANGED, STATUS_MSG))
+            f.write('<details> <summary>Click to expand!</summary>\n')
+            for pkg in PKGS_NOW_CHANGED:
+                status = PKGS[pkg]
+                f.write('%s : %s <br>\n' % (pkg, status))
+            f.write('</details>\n\n')
 
     # # Failed tests
     # f.write('## :heavy_multiplication_x: Packages that failed tests\n')
