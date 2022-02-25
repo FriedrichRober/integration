@@ -93,8 +93,8 @@ jobs:
       - name: "Debugging Report Script"
         id: debugging
         run: |
-          PKG="${{ matrix.package }}""
-          if [[ PKG = @("aclib"| "agt") ]]; then
+          PKG="${{ matrix.package }}"
+          if [[ PKG = @(aclib | agt) ]]; then
             exit 0
           else
             exit 1
