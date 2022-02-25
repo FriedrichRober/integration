@@ -1,0 +1,13 @@
+{
+    "date": "2022-02-25 10:16:02.837586",
+    "pkgs": {
+        "4ti2interface": "failure",
+        "ace": "failure",
+        "aclib": "success",
+        "agt": "success"
+    },
+    "total": 4,
+    "success": 2,
+    "failure": 2,
+    "cancelled": 0
+}
