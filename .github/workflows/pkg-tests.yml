@@ -94,12 +94,13 @@ jobs:
         id: debugging
         run: |
           PKG="${{ matrix.package }}"
-          case $PKG in
+          case PKG in
             aclib|agt
               exit 0
-            ;;
+              ;;
             *)
               exit 1
+              ;;
           esac
 
   report:
