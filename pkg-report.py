@@ -100,16 +100,17 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
     ############################################################################
     # Changed Status Packages
-    for STATUS, STATUS_MSG in [('failure', 'failed'),
-                               ('success', 'succeeded'),
-                               ('cancelled', 'cancelled')]:
+    for STATUS, STATUS_MSG, STATUS_HEADER in [
+                ('failure', 'failed', ':heavy_multiplication_x: Packages now failing'),
+                ('success', 'succeeded', ':heavy_check_mark: Packages now succeeding'),
+                ('cancelled', 'cancelled', ':heavy_exclamation_mark: Packages that now were cancelled')]:
         PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
             pkg in LAST_PKGS.keys() and
             PKGS[pkg] != LAST_PKGS[pkg] and
             PKGS[pkg] == STATUS]
 
         if len(PKGS_NOW_CHANGED) > 0:
-            f.write('## Packages now failing\n\n')
+            f.write('## %s\n\n' % STATUS_HEADER)
             f.write('%d packages %s tests only on the current version.' % (len(PKGS_NOW_CHANGED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n')
             for pkg in PKGS_NOW_CHANGED:
@@ -120,16 +121,17 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
     ############################################################################
     # Same Status Packages
-    for STATUS, STATUS_MSG in [('failure', 'failed'),
-                               ('success', 'succeeded'),
-                               ('cancelled', 'cancelled')]:
+    for STATUS, STATUS_MSG, STATUS_HEADER in [
+                ('failure', 'failed', ':heavy_multiplication_x: Packages still failing'),
+                ('success', 'succeeded', ':heavy_check_mark: Packages still succeeding'),
+                ('cancelled', 'cancelled', ':heavy_minus_sign: Packages that still were cancelled')]:
         PKGS_FILTERED = [pkg for pkg in PKGS.keys() if
             pkg in LAST_PKGS.keys() and
             PKGS[pkg] == LAST_PKGS[pkg] and
             PKGS[pkg] == STATUS]
 
         if len(PKGS_FILTERED) > 0:
-            f.write('## Packages now failing\n\n')
+            f.write('## %s\n\n' % STATUS_HEADER)
             f.write('%d packages %s tests also on the previous version.' % (len(PKGS_FILTERED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n')
             for pkg in PKGS_FILTERED:
