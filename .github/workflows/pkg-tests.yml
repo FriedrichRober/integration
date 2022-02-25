@@ -38,36 +38,54 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.extract.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v2
-
-      - name: "Get the Docker container URL"
-        id: container
-        run: echo "::set-output name=url::ghcr.io/gap-system/gap-docker-${{ needs.extract.outputs.container }}:master"
-
-      - run: docker pull ${{ steps.container.outputs.url }}
-
-      - name: "Run ${{ matrix.package }}'s tests in the container with GAP ${{ needs.extract.outputs.container }}"
-        timeout-minutes: 20
-        run: >
-          docker run
-          -v $PWD:/home/workspace
-          ${{ steps.container.outputs.url }}
-          /bin/sh -c "PKG_NAME=${{ matrix.package }} /home/workspace/pkg-tests.sh"
-
-      - name: "Get job status"
-        id: job-status
-        if: always()
+      - name: "Debugging Report Script"
+        id: debugging
         run: |
-          PKG="${{ matrix.package }}"
-          STATUS="${{ job.status }}"
-          echo ${STATUS} > "${PKG}.txt"
+          if ${{ matrix.package }} in ["aclinb", "agt"]
+          then
+            exit 0
+          else
+            exit 1
+          fi
 
-      - name: "Upload job status"
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: ${{ matrix.package }}
-          path: "${{ matrix.package }}.txt"
+  # individual-package:
+  #   name: "${{ matrix.package }}"
+  #   needs: extract
+  #   runs-on: ubuntu-18.04
+  #   strategy:
+  #     fail-fast: false
+  #     matrix: ${{ fromJSON(needs.extract.outputs.matrix) }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - name: "Get the Docker container URL"
+  #       id: container
+  #       run: echo "::set-output name=url::ghcr.io/gap-system/gap-docker-${{ needs.extract.outputs.container }}:master"
+
+  #     - run: docker pull ${{ steps.container.outputs.url }}
+
+  #     - name: "Run ${{ matrix.package }}'s tests in the container with GAP ${{ needs.extract.outputs.container }}"
+  #       timeout-minutes: 20
+  #       run: >
+  #         docker run
+  #         -v $PWD:/home/workspace
+  #         ${{ steps.container.outputs.url }}
+  #         /bin/sh -c "PKG_NAME=${{ matrix.package }} /home/workspace/pkg-tests.sh"
+
+  #     - name: "Get job status"
+  #       id: job-status
+  #       if: always()
+  #       run: |
+  #         PKG="${{ matrix.package }}"
+  #         STATUS="${{ job.status }}"
+  #         echo ${STATUS} > "${PKG}.txt"
+
+  #     - name: "Upload job status"
+  #       uses: actions/upload-artifact@v2
+  #       if: always()
+  #       with:
+  #         name: ${{ matrix.package }}
+  #         path: "${{ matrix.package }}.txt"
 
   report:
     name: "Report"

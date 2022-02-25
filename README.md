@@ -2,6 +2,10 @@
 
 * The purpose of this repository is to run various tests.
 
+Testing Badge:
+
+[![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/FriedrichRober/integration/data/badges/badge.json)](https://github.com/FriedrichRober/integration/actions/workflows/pkg-master-caller.yml)
+
 
 ## Summary of status
 
