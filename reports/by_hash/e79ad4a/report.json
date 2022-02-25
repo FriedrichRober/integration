@@ -1,0 +1,13 @@
+{
+    "gap_build_version": "4.12dev",
+    "workflow": "https://github.com/FriedrichRober/integration/actions/runs/1899793482",
+    "date": "2022-02-25 16:58:58.500546",
+    "pkgs": {
+        "ace": "failure",
+        "aclib": "success"
+    },
+    "total": 2,
+    "success": 1,
+    "failure": 1,
+    "cancelled": 0
+}
