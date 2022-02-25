@@ -1,0 +1,14 @@
+{
+    "docker_container": "ghcr.io/gap-system/gap-docker-master:master",
+    "gap_build_version": "4.12dev",
+    "workflow": "https://github.com/FriedrichRober/integration/actions/runs/1899925250",
+    "date": "2022-02-25 17:28:40.186063",
+    "pkgs": {
+        "ace": "failure",
+        "aclib": "success"
+    },
+    "total": 2,
+    "success": 1,
+    "failure": 1,
+    "cancelled": 0
+}
