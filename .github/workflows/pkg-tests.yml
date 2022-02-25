@@ -94,7 +94,7 @@ jobs:
         id: debugging
         run: |
           PKG="${{ matrix.package }}"
-          if [[ PKG = @(aclib | agt) ]]; then
+          if [[ PKG = @("aclib" | "agt") ]]; then
             exit 0
           else
             exit 1
