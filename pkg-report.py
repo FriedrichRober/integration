@@ -137,20 +137,11 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
                 f.write('%s : %s <br>\n' % (pkg, status))
             f.write('</details>\n\n')
 
-    # # Failed tests
-    # f.write('## :heavy_multiplication_x: Packages that failed tests\n')
-    # f.write('**%d packages failed tests only on the current version.**\n' % REPORT['failure_current'])
-
-    # f.write('<strong>%d packages failed tests on the previous version too.</strong>\n' % REPORT['failure_previous'])
-
-    # Skipped tests
-
-    # Successfull tests
-
 symlink(DIR_REPORT, DIR_LATEST_REPORT_SYMBOLIC, overwrite=True)
 
 ################################################################################
 # Generate html redirect
+REPO = 'https://github.com/FriedrichRober/integration/blob'
 with open('gh-pages/index.html', 'w') as f:
     f.write('''
     <!DOCTYPE html>
@@ -158,7 +149,7 @@ with open('gh-pages/index.html', 'w') as f:
     <title>Redirecting to latest report</title>
     <meta http-equiv="refresh" content="0; URL=%s">
     <link rel="canonical" href="%s">
-    ''' % (DIR_REPORT+'/report.md', DIR_REPORT+'/report.md'))
+    ''' % (REPO+'/'+DIR_REPORT+'/report.md', REPO+'/'+DIR_REPORT+'/report.md'))
 
 ################################################################################
 # Generate badge
