@@ -103,6 +103,21 @@ jobs:
               ;;
           esac
 
+      - name: "Get job status"
+        id: job-status
+        if: always()
+        run: |
+          PKG="${{ matrix.package }}"
+          STATUS="${{ job.status }}"
+          echo ${STATUS} > "${PKG}.txt"
+
+      - name: "Upload job status"
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: ${{ matrix.package }}
+          path: "${{ matrix.package }}.txt"
+
   report:
     name: "Report"
     needs: individual-package
