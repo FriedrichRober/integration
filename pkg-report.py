@@ -125,7 +125,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
                                ('cancelled', 'cancelled')]:
         PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
             pkg in LAST_PKGS.keys() and
-            PKGS[pkg] != LAST_PKGS[pkg] and
+            PKGS[pkg] == LAST_PKGS[pkg] and
             PKGS[pkg] == STATUS]
 
         if len(PKGS_NOW_CHANGED) > 0:
