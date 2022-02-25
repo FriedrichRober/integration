@@ -83,14 +83,16 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
         last_status = LAST_PKGS[pkg]
         if status != last_status:
             f.write('%s : changed status from %s to %s <br>\n' % (pkg, last_status, status))
-    f.write('</details>\n')
+    f.write('</details>\n\n')
 
     f.write('## Same Status\n\n')
+    f.write('<details> <summary>Click to expand!</summary>\n')
     for pkg in [value for value in PKGS.keys() if value in LAST_PKGS.keys()]:
         status = PKGS[pkg]
         last_status = LAST_PKGS[pkg]
         if status == last_status:
             f.write('%s : %s <br>\n' % (pkg, status))
+    f.write('</details>\n\n')
 
     f.write('## New Packages\n\n')
     for pkg in [value for value in PKGS.keys() if not value in LAST_PKGS.keys()]:
