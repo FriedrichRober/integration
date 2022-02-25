@@ -1,4 +1,4 @@
-# Run this file on main branch with a gh-pages worktree
+# Run this file on main branch with data and gh-pages worktree
 from utils import *
 import sys
 import os
@@ -114,6 +114,16 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
 symlink(DIR_REPORT, DIR_LATEST_REPORT_SYMBOLIC, overwrite=True)
 
+################################################################################
+# Generate html redirect
+with open('gh-pages/index.html', 'w') as f:
+    f.write('''
+    <!DOCTYPE html>
+    <meta charset="utf-8">
+    <title>Redirecting to latest report</title>
+    <meta http-equiv="refresh" content="0; URL=%s">
+    <link rel="canonical" href="%s">
+    ''' % (DIR_REPORT+'/report.md', DIR_REPORT+'/report.md'))
 
 ################################################################################
 # Generate badge

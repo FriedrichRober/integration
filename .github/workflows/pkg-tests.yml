@@ -129,12 +129,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: "Create data worktree"
+      - name: "Create data and gh-pages worktree"
         run: |
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
           git fetch
+
           git branch --track data origin/data
           git worktree add data origin/data
+
+          git branch --track gh-pages origin/gh-pages
+          git worktree add gh-pages origin/gh-pages
 
       - name: "Download every job status"
         uses: actions/download-artifact@v2
@@ -150,12 +154,18 @@ jobs:
         id: report
         run: python pkg-report.py ${{inputs.container}} $(git rev-parse --short "$GITHUB_SHA") ${GITHUB_REF#refs/heads/}
 
-      - name: "Push report to data"
+      - name: "Push everythijng"
         id: push-report
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
           cd data
           git add -A
           git commit -m "Automated report"
+          git push origin HEAD:data
+
+          cd ../gh-pages
+          git add -A
+          git commit -m "Update redirect"
           git push origin HEAD:data
