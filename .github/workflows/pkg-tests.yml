@@ -152,7 +152,7 @@ jobs:
 
       - name: "Generate report"
         id: report
-        run: python pkg-report.py ${{inputs.container}} $(git rev-parse --short "$GITHUB_SHA") ${GITHUB_REF#refs/heads/}
+        run: python pkg-report.py ${{ github.run_id }} ${{inputs.container}} $(git rev-parse --short "$GITHUB_SHA") ${GITHUB_REF#refs/heads/}
 
       - name: "Push everythijng"
         id: push-report
