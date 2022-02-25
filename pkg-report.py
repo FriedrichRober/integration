@@ -64,7 +64,7 @@ with open(DIR_REPORT+'/report.json', 'w') as f:
 ################################################################################
 # Generate markdown
 DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
-if os.path.isdir(DIR_LATEST_REPORT_SYMBOLIC):
+if os.path.islink(DIR_LATEST_REPORT_SYMBOLIC):
     DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
 
     with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
@@ -91,7 +91,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
     if len(PKGS_NEW) > 0:
         f.write('## New Packages\n\n')
         for pkg in PKGS_NEW:
-            status = PKGS_NEW[pkg]
+            status = PKGS[pkg]
             f.write('- %s : %s <br>\n' % (pkg, status))
 
     ############################################################################
@@ -102,7 +102,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
     if len(PKGS_REMOVED) > 0:
         f.write('## Removed Packages\n\n')
         for pkg in PKGS_REMOVED:
-            status = PKGS_REMOVED[pkg]
+            status = LAST_PKGS[pkg]
             f.write('- %s : %s <br>\n' % (pkg, status))
 
     ############################################################################
