@@ -60,28 +60,53 @@ with open(DIR_REPORT+'/report.json', 'w') as f:
 ################################################################################
 # Generate markdown
 DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
-# DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
+DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
 
-# with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
-#     LAST_REPORT = json.load(f)
+with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
+    LAST_REPORT = json.load(f)
 
-# with open('report.md', 'w') as f:
-#     # Header
-#     f.write('# Package Evaluation Report\n')
-#     f.write('## Job Properties\n')
-#     f.write('*Commit(s):*\n')
-#     f.write('*Triggered By:*\n')
-#     f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
+with open('report.md', 'w') as f:
+    # Header
+    f.write('# Package Evaluation Report\n')
+    f.write('## Job Properties\n')
+    f.write('*Commit(s):*\n')
+    f.write('*Triggered By:*\n')
+    f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
 
-#     # Failed tests
-#     f.write('## :heavy_multiplication_x: Packages that failed tests\n')
-#     f.write('**%d packages failed tests only on the current version.**\n' % REPORT['failure_current'])
+    PKGS = REPORT['pkgs'].keys()
+    LAST_PKGS = LAST_REPORT['pkg'].keys()
 
-#     f.write('<strong>%d packages failed tests on the previous version too.</strong>\n' % REPORT['failure_previous'])
+    f.write('## Changed Status\n')
+    for pkg in [value for value in PKGS if value in LAST_PKGS]:
+        status = PKGS[pkg]
+        last_status = LAST_PKGS[pkg]
+        if status != last_status:
+            f.write('%s : changed status from %s to %s\n' % (pkg, last_status, status))
 
-#     # Skipped tests
+    f.write('## Same Status\n')
+    for pkg in [value for value in PKGS if value in LAST_PKGS]:
+        status = PKGS[pkg]
+        last_status = LAST_PKGS[pkg]
+        if status == last_status:
+            f.write('%s : %s\n' % (pkg, status))
 
-#     # Successfull tests
+    f.write('## New Packages\n')
+    for pkg in [value for value in PKGS if not value in LAST_PKGS]:
+        f.write('%s\n' % pkg)
+
+    f.write('## Removed Packages\n')
+    for pkg in [value for value in LAST_PKGS if not value in PKGS]:
+        f.write('%s\n' % pkg)
+
+    # # Failed tests
+    # f.write('## :heavy_multiplication_x: Packages that failed tests\n')
+    # f.write('**%d packages failed tests only on the current version.**\n' % REPORT['failure_current'])
+
+    # f.write('<strong>%d packages failed tests on the previous version too.</strong>\n' % REPORT['failure_previous'])
+
+    # Skipped tests
+
+    # Successfull tests
 
 symlink(DIR_REPORT, DIR_LATEST_REPORT_SYMBOLIC, overwrite=True)
 
