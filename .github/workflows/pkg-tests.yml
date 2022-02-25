@@ -95,7 +95,7 @@ jobs:
         run: |
           PKG="${{ matrix.package }}"
           case PKG in
-            aclib|agt
+            aclib|agt)
               exit 0
               ;;
             *)
