@@ -1,0 +1,14 @@
+{
+    "workflow": "https://github.com/FriedrichRober/integration/actions/runs/1898745746",
+    "date": "2022-02-25 12:59:54.991495",
+    "pkgs": {
+        "4ti2interface": "failure",
+        "ace": "failure",
+        "aclib": "success",
+        "agt": "failure"
+    },
+    "total": 4,
+    "success": 1,
+    "failure": 3,
+    "cancelled": 0
+}
