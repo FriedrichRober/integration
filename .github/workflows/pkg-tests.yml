@@ -8,46 +8,28 @@ on:
         type: string
 
 jobs:
-  extract:
-    name: "Get package names"
-    runs-on: ubuntu-latest
-    container: ghcr.io/gap-system/gap-docker-${{ inputs.container }}:master
-    outputs:
-      matrix: ${{ steps.get-names.outputs.matrix }}
-      container: ${{ inputs.container }}
-    steps:
-      # FIXME: Awful! This should be completely redone to use the package distro
-      - name: "Get the list of package names"
-        id: get-names
-        run: |
-          cd ${GAP_HOME}/pkg
-          MATRIX='{"package":['
-          for PKG in `ls */PackageInfo.g | cut -d'/' -f1 | cut -d'-' -f1 | tr '[:upper:]' '[:lower:]' | sort`; do
-            echo "${PKG}"
-            MATRIX="${MATRIX}\"${PKG}\","
-          done
-          MATRIX="${MATRIX}]}"
-          MATRIX='{"package":["4ti2interface","ace","aclib","agt"]}'
-          echo "::set-output name=matrix::$MATRIX"
-
-  individual-package:
-    name: "${{ matrix.package }}"
-    needs: extract
-    runs-on: ubuntu-18.04
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.extract.outputs.matrix) }}
-    steps:
-      - name: "Debugging Report Script"
-        id: debugging
-        run: |
-          if ${{ matrix.package }} in ["aclinb", "agt"]
-          then
-            exit 0
-          else
-            exit 1
-          fi
-
+  # extract:
+  #   name: "Get package names"
+  #   runs-on: ubuntu-latest
+  #   container: ghcr.io/gap-system/gap-docker-${{ inputs.container }}:master
+  #   outputs:
+  #     matrix: ${{ steps.get-names.outputs.matrix }}
+  #     container: ${{ inputs.container }}
+  #   steps:
+  #     # FIXME: Awful! This should be completely redone to use the package distro
+  #     - name: "Get the list of package names"
+  #       id: get-names
+  #       run: |
+  #         cd ${GAP_HOME}/pkg
+  #         MATRIX='{"package":['
+  #         for PKG in `ls */PackageInfo.g | cut -d'/' -f1 | cut -d'-' -f1 | tr '[:upper:]' '[:lower:]' | sort`; do
+  #           echo "${PKG}"
+  #           MATRIX="${MATRIX}\"${PKG}\","
+  #         done
+  #         MATRIX="${MATRIX}]}"
+  #         MATRIX='{"package":["4ti2interface","ace","aclib","agt"]}'
+  #         echo "::set-output name=matrix::$MATRIX"
+  #
   # individual-package:
   #   name: "${{ matrix.package }}"
   #   needs: extract
@@ -86,6 +68,37 @@ jobs:
   #       with:
   #         name: ${{ matrix.package }}
   #         path: "${{ matrix.package }}.txt"
+
+  extract:
+    name: "Get package names"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.get-names.outputs.matrix }}
+      container: ${{ inputs.container }}
+    steps:
+      - name: "Get the list of package names"
+        id: get-names
+        run: |
+          MATRIX='{"package":["4ti2interface","ace","aclib","agt"]}'
+          echo "::set-output name=matrix::$MATRIX"
+
+  individual-package:
+    name: "${{ matrix.package }}"
+    needs: extract
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.extract.outputs.matrix) }}
+    steps:
+      - name: "Debugging Report Script"
+        id: debugging
+        run: |
+          if ${{ matrix.package }} in ["aclinb", "agt"]
+          then
+            exit 0
+          else
+            exit 1
+          fi
 
   report:
     name: "Report"
