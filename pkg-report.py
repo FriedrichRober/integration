@@ -59,7 +59,7 @@ with open(DIR_REPORT+'/report.json', 'w') as f:
 
 ################################################################################
 # Generate markdown
-# DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
+DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
 # DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
 
 # with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
