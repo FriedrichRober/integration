@@ -110,7 +110,7 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
 
         if len(PKGS_NOW_CHANGED) > 0:
             f.write('## Packages now failing\n\n')
-            f.write('%d packages %s tests only on the current version.' % len(PKGS_NOW_CHANGED, STATUS_MSG))
+            f.write('%d packages %s tests only on the current version.' % (len(PKGS_NOW_CHANGED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n')
             for pkg in PKGS_NOW_CHANGED:
                 status = PKGS[pkg]
@@ -123,16 +123,16 @@ with open(DIR_REPORT+'/report.md', 'w') as f:
     for STATUS, STATUS_MSG in [('failure', 'failed'),
                                ('success', 'succeeded'),
                                ('cancelled', 'cancelled')]:
-        PKGS_NOW_CHANGED = [pkg for pkg in PKGS.keys() if
+        PKGS_FILTERED = [pkg for pkg in PKGS.keys() if
             pkg in LAST_PKGS.keys() and
             PKGS[pkg] == LAST_PKGS[pkg] and
             PKGS[pkg] == STATUS]
 
-        if len(PKGS_NOW_CHANGED) > 0:
+        if len(PKGS_FILTERED) > 0:
             f.write('## Packages now failing\n\n')
-            f.write('%d packages %s tests also on the previous version.' % len(PKGS_NOW_CHANGED, STATUS_MSG))
+            f.write('%d packages %s tests also on the previous version.' % (len(PKGS_FILTERED), STATUS_MSG))
             f.write('<details> <summary>Click to expand!</summary>\n')
-            for pkg in PKGS_NOW_CHANGED:
+            for pkg in PKGS_FILTERED:
                 status = PKGS[pkg]
                 f.write('%s : %s <br>\n' % (pkg, status))
             f.write('</details>\n\n')
