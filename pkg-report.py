@@ -34,7 +34,7 @@ REPORT = {}
 REPORT['date'] = str(datetime.now())
 REPORT['pkgs'] = PKG_STATUS
 
-DIR_REPORT_BASE = 'gh-pages/_data/reports'
+DIR_REPORT_BASE = 'data/reports'
 DIR_REPORT = DIR_REPORT_BASE+'/by_hash/'+hash
 os.makedirs(DIR_REPORT, exist_ok = True)
 
@@ -57,12 +57,39 @@ for pkg, status in PKG_STATUS.items():
 with open(DIR_REPORT+'/report.json', 'w') as f:
     json.dump(REPORT, f, ensure_ascii=False, indent=4)
 
-symlink(DIR_REPORT, DIR_REPORT_BASE+'/latest', overwrite=True)
+################################################################################
+# Generate markdown
+# DIR_LATEST_REPORT_SYMBOLIC = DIR_REPORT_BASE+'/latest'
+# DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
+
+# with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
+#     LAST_REPORT = json.load(f)
+
+# with open('report.md', 'w') as f:
+#     # Header
+#     f.write('# Package Evaluation Report\n')
+#     f.write('## Job Properties\n')
+#     f.write('*Commit(s):*\n')
+#     f.write('*Triggered By:*\n')
+#     f.write('In total, %d packages were tested, out of which %d succeeded, %d failed and %d were skipped.' % (REPORT['total'], REPORT['success'], REPORT['failure'], REPORT['cancelled']))
+
+#     # Failed tests
+#     f.write('## :heavy_multiplication_x: Packages that failed tests\n')
+#     f.write('**%d packages failed tests only on the current version.**\n' % REPORT['failure_current'])
+
+#     f.write('<strong>%d packages failed tests on the previous version too.</strong>\n' % REPORT['failure_previous'])
+
+#     # Skipped tests
+
+#     # Successfull tests
+
+symlink(DIR_REPORT, DIR_LATEST_REPORT_SYMBOLIC, overwrite=True)
+
 
 ################################################################################
 # Generate badge
 
-DIR_BADGE = 'gh-pages/_data/badges'
+DIR_BADGE = 'data/badges'
 os.makedirs(DIR_BADGE, exist_ok = True)
 
 relativeFailures = 1 - REPORT['success'] / REPORT['total']
