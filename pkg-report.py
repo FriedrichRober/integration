@@ -65,7 +65,7 @@ DIR_LATEST_REPORT = os.readlink(DIR_LATEST_REPORT_SYMBOLIC)
 with open(DIR_LATEST_REPORT+'/report.json', 'r') as f:
     LAST_REPORT = json.load(f)
 
-with open('report.md', 'w') as f:
+with open(DIR_REPORT+'/report.md', 'w') as f:
     # Header
     f.write('# Package Evaluation Report\n')
     f.write('## Job Properties\n')
